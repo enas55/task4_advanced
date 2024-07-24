@@ -1,3 +1,4 @@
+import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
@@ -69,33 +70,18 @@ class _HomePageState extends State<HomePage> {
             ),
             carouselController: carouselSlidercontroller,
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: carouselSliderIndicators(),
+          DotsIndicator(
+            dotsCount: carouselItems.length,
+            position: currentIndex,
+            decorator: const DotsDecorator(activeColor: Colors.blue),
+            onTap: (index) {
+              carouselSlidercontroller.animateToPage(index);
+              currentIndex = index;
+              setState(() {});
+            },
           )
         ],
       ),
     );
-  }
-
-  List<Widget> carouselSliderIndicators() {
-    return List.generate(carouselItems.length, (index) {
-      return InkWell(
-        child: Container(
-          margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 2),
-          width: 12,
-          height: 12,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            color: currentIndex == index ? Colors.blue : Colors.grey,
-          ),
-        ),
-        onTap: () async {
-          await carouselSlidercontroller.animateToPage(index);
-          currentIndex = index;
-          setState(() {});
-        },
-      );
-    });
   }
 }
